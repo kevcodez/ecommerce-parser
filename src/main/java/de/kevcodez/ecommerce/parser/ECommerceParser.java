@@ -14,9 +14,9 @@ public enum ECommerceParser {
 
     INSTANCE;
 
-    private List<AbstractProductParser> parsers = new ArrayList<>();
+    private final List<AbstractProductParser> parsers = new ArrayList<>();
 
-    private WebsiteSourceDownloader websiteSourceDownloader = new WebsiteSourceDownloader();
+    private final WebsiteSourceDownloader websiteSourceDownloader = new WebsiteSourceDownloader();
 
     ECommerceParser() {
         parsers.add(new AlternateParser(websiteSourceDownloader));

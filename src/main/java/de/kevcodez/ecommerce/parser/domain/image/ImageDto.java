@@ -19,12 +19,6 @@ public class ImageDto {
         return this;
     }
 
-    public ImageDto removeVariant(ImageVariant imageVariant) {
-        variants.remove(imageVariant);
-
-        return this;
-    }
-
     public List<ImageVariant> getVariants() {
         return Collections.unmodifiableList(variants);
     }

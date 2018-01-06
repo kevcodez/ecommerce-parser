@@ -14,7 +14,7 @@ import de.kevcodez.ecommerce.parser.domain.product.Product;
 
 public abstract class AbstractProductParser {
 
-    private WebsiteSourceDownloader websiteSourceDownloader;
+    private final WebsiteSourceDownloader websiteSourceDownloader;
 
     AbstractProductParser(WebsiteSourceDownloader websiteSourceDownloader) {
         this.websiteSourceDownloader = websiteSourceDownloader;

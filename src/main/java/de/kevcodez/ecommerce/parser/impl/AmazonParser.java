@@ -134,13 +134,11 @@ public class AmazonParser extends AbstractProductParser {
                 ImageDto imageDto = new ImageDto();
 
                 Map<String, List<Integer>> imageMap = OBJECT_MAPPER.convertValue(node.get("main"), typeRef);
-                imageMap.forEach((key, value) -> {
-                    imageDto.addVariant(ImageVariant.builder()
-                        .url(key)
-                        .height(value.get(0))
-                        .width(value.get(1))
-                        .build());
-                });
+                imageMap.forEach((key, value) -> imageDto.addVariant(ImageVariant.builder()
+                    .url(key)
+                    .height(value.get(0))
+                    .width(value.get(1))
+                    .build()));
 
                 images.add(imageDto);
             });
