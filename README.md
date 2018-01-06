@@ -1,5 +1,8 @@
 This project aims at providing a simple parser for the top 100 e commerce websites. This project is in an extremely early stage.
 
+[![Build Status](https://travis-ci.org/kevcodez/ecommerce-parser.svg?branch=master)](https://travis-ci.org/kevcodez/ecommerce-parser)
+[![Coverage Status](https://coveralls.io/repos/github/kevcodez/ecommerce-parser/badge.svg)](https://coveralls.io/github/kevcodez/ecommerce-parser)
+
 # Usage
 
 Using the parser is as simple as it gets:

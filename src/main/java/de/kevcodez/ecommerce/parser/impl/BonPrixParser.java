@@ -49,6 +49,11 @@ public class BonPrixParser extends AbstractProductParser {
     @Override
     Discount parseDiscount(BigDecimal currentPrice, Document document) {
         String formerPrice = document.select("span.price.former-price").text();
+
+        if (formerPrice.isEmpty()) {
+            return null;
+        }
+
         String oldPriceAsString = formerPrice.replace("€", "").replace(",", ".");
 
         return Discount.of(new BigDecimal(oldPriceAsString), currentPrice);

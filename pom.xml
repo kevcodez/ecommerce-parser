@@ -10,9 +10,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <jacoco.agent.argLine/>
 
         <!-- Versions -->
         <jackson.version>2.9.3</jackson.version>
@@ -25,8 +28,11 @@
         <mockito.version>2.13.0</mockito.version>
 
         <!-- Plugins -->
-        <plugin.jacoco.version>0.8.0</plugin.jacoco.version>
         <plugin.coveralls.version>4.3.0</plugin.coveralls.version>
+        <plugin.jacoco.version>0.8.0</plugin.jacoco.version>
+        <plugin.junit-surefire-provider.version>1.0.2</plugin.junit-surefire-provider.version>
+        <plugin.maven-compiler.version>3.7.0</plugin.maven-compiler.version>
+        <plugin.surefire.version>2.19.1</plugin.surefire.version>
     </properties>
 
     <dependencies>
@@ -69,6 +75,13 @@
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
@@ -85,6 +98,15 @@
 
     <build>
         <plugins>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${plugin.maven-compiler.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -104,6 +126,26 @@
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>${plugin.coveralls.version}</version>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${plugin.surefire.version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/Test*.java</include>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                        <include>**/*TestCase.java</include>
+                    </includes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>${plugin.junit-surefire-provider.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
         </plugins>
