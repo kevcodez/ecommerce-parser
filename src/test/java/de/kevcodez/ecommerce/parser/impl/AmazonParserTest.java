@@ -1,6 +1,6 @@
 package de.kevcodez.ecommerce.parser.impl;
 
-import static org.assertj.core.api.Assertions.within;
+import static org.assertj.core.api.Assertions.withinPercentage;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,7 +26,7 @@ class AmazonParserTest extends AbstractParserTest {
 
     private static final String SAMPLE_GAME_OF_THRONES_S7 = "/amazon/sample_game_of_thrones_s7";
     private static final String SAMPLE_YELLOW_DUCK = "/amazon/sample_yellow_duck";
-    private static final String SAMPLE_AUTO_RUECKLEHNE = "/amazon/sample_auto_ruecklehne";
+    private static final String SAMPLE_DISCOUNTED = "/amazon/sample_discounted";
 
     private static final String VALID_AMAZON_URL = "https://www.amazon.de/gp/product/B002OLT9R8";
 
@@ -54,8 +54,7 @@ class AmazonParserTest extends AbstractParserTest {
         Price price = product.getPrice();
 
         assertAll("Price",
-            () -> assertThat(price.getCurrentPrice())
-                .isCloseTo(new BigDecimal("29.99"), within(BigDecimal.valueOf(0.001))),
+            () -> assertThat(price.getCurrentPrice()).isCloseTo(new BigDecimal("29.99"), withinPercentage(0.1D)),
             () -> assertThat(price.getCurrency().getCurrencyCode()).isEqualTo("EUR"),
             () -> assertThat(price.getDiscount()).isNull());
 
@@ -119,8 +118,8 @@ class AmazonParserTest extends AbstractParserTest {
     }
 
     @Test
-    void parseSampleAutoRuecklehne() {
-        when(websiteSourceDownloader.download(anyString())).thenReturn(getResourceAsString(SAMPLE_AUTO_RUECKLEHNE));
+    void parseSampleDiscounted() {
+        when(websiteSourceDownloader.download(anyString())).thenReturn(getResourceAsString(SAMPLE_DISCOUNTED));
 
         Product product = amazonParser.parse(VALID_AMAZON_URL);
         Price price = product.getPrice();
@@ -130,8 +129,10 @@ class AmazonParserTest extends AbstractParserTest {
 
         Discount discount = price.getDiscount();
         assertAll("Discount",
-            () -> assertThat(discount.getValue()).isEqualTo(new BigDecimal("13.00")),
-            () -> assertThat(discount.getPercentage()).isEqualTo(new BigDecimal("50")));
+            () -> assertThat(discount.getOldPrice()).isCloseTo(new BigDecimal("25.99"), withinPercentage(0.1D)),
+            () -> assertThat(discount.getValue()).isCloseTo(new BigDecimal("13.00"), withinPercentage(0.1D)),
+            () -> assertThat(discount.getPercentage()).isCloseTo(new BigDecimal("50"), withinPercentage(0.1D))
+        );
     }
 
     @ParameterizedTest

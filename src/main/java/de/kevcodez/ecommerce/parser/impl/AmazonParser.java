@@ -27,6 +27,8 @@ public class AmazonParser extends AbstractProductParser {
 
     private static final Pattern PATTERN_DISCOUNT = Pattern.compile("(\\d+,\\d+).\\((\\d+)%\\)");
 
+    private static final Pattern PATTERN_PRICE = Pattern.compile("\\d+,\\d+");
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public AmazonParser(WebsiteSourceDownloader websiteSourceDownloader) {
@@ -60,11 +62,9 @@ public class AmazonParser extends AbstractProductParser {
             price = document.select("span#priceblock_saleprice").text();
         }
 
-        price = price.replace("EUR ", "").replace(",", ".");
-
         Discount discount = parseDiscount(document);
 
-        return new Price(new BigDecimal(price), "EUR", discount);
+        return new Price(priceStringToBigDecimal(price), "EUR", discount);
     }
 
     private Discount parseDiscount(Document document) {
@@ -72,13 +72,25 @@ public class AmazonParser extends AbstractProductParser {
         if (discountAsText != null) {
             Matcher matcherDiscount = PATTERN_DISCOUNT.matcher(discountAsText);
             if (matcherDiscount.find()) {
-                BigDecimal discountValue = new BigDecimal(matcherDiscount.group(1).replace(",", "."));
+                String oldPriceAsText = document.select("div#price span.a-text-strike").text();
+                BigDecimal oldPrice = priceStringToBigDecimal(oldPriceAsText);
+                BigDecimal discountValue = priceStringToBigDecimal(matcherDiscount.group(1));
                 BigDecimal percentage = new BigDecimal(matcherDiscount.group(2));
-                return new Discount(discountValue, percentage);
+                return new Discount(oldPrice, discountValue, percentage);
             }
         }
 
         return null;
+    }
+
+    private BigDecimal priceStringToBigDecimal(String text) {
+        Matcher matcher = PATTERN_PRICE.matcher(text);
+        if (matcher.find()) {
+            return new BigDecimal(matcher.group().replace(",", "."));
+        }
+        else {
+            throw new IllegalArgumentException("Could not find price");
+        }
     }
 
     @Override
