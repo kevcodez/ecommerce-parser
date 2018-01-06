@@ -58,3 +58,23 @@ The product contains information about a product such as the title, description,
 * Amazon.de, Amazon.com
 * Alternate.de
 * Bonprix.de
+
+# Development
+
+This project is using Java 8 with Maven, Junit 5, Mockito 2. [Jsoup](https://github.com/jhy/jsoup) is used for parsing.
+
+Build the project using `mvn clean install`.
+
+## Writing a new parser
+
+To write a new parser simply extend the `AbstractProductParser` - see **de.kevcodez.ecommerce.parser.impl** package.
+The class is pretty straight-forward to implement.
+
+For now, the parser needs to explicitly be registered at the `ECommerceParser` class. This might change to a more dynamic approach later.
+
+# Motivation
+
+The motivation is due to a private project (cannot tell too much for now).
+
+I've had quite a few issues with official APIs such as the Amazon Product Advertising API which throttles the requests very harshly.
+Thus, I did it the good ol' way by scraping the page source.
