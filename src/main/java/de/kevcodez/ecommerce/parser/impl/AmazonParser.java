@@ -1,0 +1,140 @@
+package de.kevcodez.ecommerce.parser.impl;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
+import de.kevcodez.ecommerce.parser.domain.price.Discount;
+import de.kevcodez.ecommerce.parser.domain.price.Price;
+import de.kevcodez.ecommerce.parser.domain.product.Product;
+import lombok.SneakyThrows;
+
+public class AmazonParser implements ProductParser {
+
+    private static final Pattern PATTERN_AMAZON = Pattern.compile("((http(s?)://)?(www\\.)?)amazon\\.(.+)");
+
+    private static final Pattern PATTERN_IMAGES = Pattern
+        .compile("(?<='colorImages':.\\{.'initial':.)([\\S\\s]+)(?=},\\s+'colorToAsin')");
+
+    private static final Pattern PATTERN_DISCOUNT = Pattern.compile("(\\d+,\\d+).\\((\\d+)%\\)");
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private WebsiteSourceDownloader websiteSourceDownloader;
+
+    public AmazonParser(WebsiteSourceDownloader websiteSourceDownloader) {
+        this.websiteSourceDownloader = websiteSourceDownloader;
+    }
+
+    @Override
+    public boolean matches(String url) {
+        return PATTERN_AMAZON.matcher(url).matches();
+    }
+
+    @Override
+    public Product parse(String url) {
+        Document document = Jsoup.parse(websiteSourceDownloader.download(url));
+
+        String title = parseTitle(document);
+        String description = parseDescription(document);
+        Price price = parsePrice(document);
+        String asin = parseAsin(document);
+        List<ImageDto> images = parseImages(document);
+
+        return Product.builder()
+            .price(price)
+            .title(title)
+            .description(description)
+            .url(url)
+            .images(images)
+            .externalId(asin)
+            .build();
+    }
+
+    private String parseTitle(Document document) {
+        return document.select("span#productTitle").text();
+    }
+
+    private String parseDescription(Document document) {
+        return document.select("div#productDescription > p:first-child").text();
+    }
+
+    private Price parsePrice(Document document) {
+        String price = document.select("span.a-size-medium.a-color-price.offer-price.a-text-normal").text();
+
+        if (price.isEmpty()) {
+            price = document.select("span#priceblock_ourprice").text();
+        }
+
+        if (price.isEmpty()) {
+            price = document.select("span#priceblock_saleprice").text();
+        }
+
+        price = price.replace("EUR ", "").replace(",", ".");
+
+        Discount discount = parseDiscount(document);
+
+        return new Price(new BigDecimal(price), "EUR", discount);
+    }
+
+    private Discount parseDiscount(Document document) {
+        String discountAsText = document.select("tr#regularprice_savings > td.a-color-price").text();
+        if (discountAsText != null) {
+            Matcher matcherDiscount = PATTERN_DISCOUNT.matcher(discountAsText);
+            if (matcherDiscount.find()) {
+                BigDecimal discountValue = new BigDecimal(matcherDiscount.group(1).replace(",", "."));
+                BigDecimal percentage = new BigDecimal(matcherDiscount.group(2));
+                return new Discount(discountValue, percentage);
+            }
+        }
+
+        return null;
+    }
+
+    private String parseAsin(Document document) {
+        return document.select("input#ASIN").val();
+    }
+
+    @SneakyThrows
+    private List<ImageDto> parseImages(Document document) {
+        TypeReference<Map<String, List<Integer>>> typeRef = new TypeReference<Map<String, List<Integer>>>() {
+        };
+
+        List<ImageDto> images = new ArrayList<>();
+
+        Matcher matcher = PATTERN_IMAGES.matcher(document.html());
+        if (matcher.find()) {
+            String colorImages = matcher.group();
+
+            ArrayNode imagesAsJson = (ArrayNode) OBJECT_MAPPER.readTree(colorImages);
+            imagesAsJson.forEach(node -> {
+                ImageDto imageDto = new ImageDto();
+
+                Map<String, List<Integer>> imageMap = OBJECT_MAPPER.convertValue(node.get("main"), typeRef);
+                imageMap.forEach((key, value) -> {
+                    imageDto.addVariant(ImageVariant.builder()
+                        .url(key)
+                        .height(value.get(0))
+                        .width(value.get(1))
+                        .build());
+                });
+
+                images.add(imageDto);
+            });
+        }
+
+        return images;
+    }
+
+}
