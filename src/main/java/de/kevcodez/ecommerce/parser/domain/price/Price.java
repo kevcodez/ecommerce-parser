@@ -8,15 +8,36 @@ import lombok.Getter;
 @Getter
 public class Price {
 
-    private final BigDecimal currentPrice;
+    private BigDecimal currentPrice;
 
-    private final Currency currency;
+    private Currency currency;
 
-    private final Discount discount;
+    private Discount discount;
 
-    public Price(BigDecimal currentPrice, String currencyCode, Discount discount) {
+    public Price() {
+    }
+
+    public Price setCurrentPrice(BigDecimal currentPrice) {
         this.currentPrice = currentPrice;
-        this.currency = Currency.getInstance(currencyCode);
+
+        return this;
+    }
+
+    public Price setDiscount(Discount discount) {
         this.discount = discount;
+
+        return this;
+    }
+
+    public Price setCurrency(String currenyCode) {
+        this.currency = Currency.getInstance(currenyCode);
+
+        return this;
+    }
+
+    public Price setCurrency(Currency currency) {
+        this.currency = currency;
+
+        return this;
     }
 }

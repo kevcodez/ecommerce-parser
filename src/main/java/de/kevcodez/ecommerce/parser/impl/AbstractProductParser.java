@@ -33,7 +33,10 @@ public abstract class AbstractProductParser {
         String currencyCode = parseCurrencyCode(url, document);
         Discount discount = parseDiscount(currentPrice, document);
 
-        Price price = new Price(currentPrice, currencyCode, discount);
+        Price price = new Price()
+            .setCurrentPrice(currentPrice)
+            .setCurrency(currencyCode)
+            .setDiscount(discount);
 
         List<ImageDto> images = parseImages(document);
 

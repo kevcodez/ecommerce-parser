@@ -10,15 +10,9 @@ public class Discount {
 
     private BigDecimal oldPrice;
 
-    private BigDecimal value;
+    private BigDecimal discount;
 
     private BigDecimal percentage;
-
-    public Discount(BigDecimal oldPrice, BigDecimal discount, BigDecimal percentage) {
-        this.oldPrice = oldPrice;
-        this.value = discount;
-        this.percentage = percentage;
-    }
 
     public static Discount of(BigDecimal oldPrice, BigDecimal newPrice) {
         BigDecimal discount = oldPrice.subtract(newPrice);
@@ -26,7 +20,27 @@ public class Discount {
             .multiply(BigDecimal.valueOf(100L))
             .setScale(2, RoundingMode.HALF_UP);
 
-        return new Discount(oldPrice, discount, percentage);
+        return new Discount()
+            .setOldPrice(oldPrice)
+            .setPercentage(percentage)
+            .setDiscount(discount);
     }
 
+    public Discount setOldPrice(BigDecimal oldPrice) {
+        this.oldPrice = oldPrice;
+
+        return this;
+    }
+
+    public Discount setDiscount(BigDecimal discount) {
+        this.discount = discount;
+
+        return this;
+    }
+
+    public Discount setPercentage(BigDecimal percentage) {
+        this.percentage = percentage;
+
+        return this;
+    }
 }

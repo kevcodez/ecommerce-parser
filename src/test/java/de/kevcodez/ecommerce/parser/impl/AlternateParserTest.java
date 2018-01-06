@@ -1,7 +1,6 @@
 package de.kevcodez.ecommerce.parser.impl;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.data.Percentage.withPercentage;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -63,9 +62,12 @@ class AlternateParserTest extends AbstractParserTest {
         );
 
         Discount discount = product.getPrice().getDiscount();
-        assertAll("Discount",
-            () -> assertThat(discount.getValue()).isCloseTo(BigDecimal.valueOf(2L), withPercentage(0.1)),
-            () -> assertThat(discount.getPercentage()).isCloseTo(BigDecimal.valueOf(1.48F), withPercentage(0.1)));
+        Discount expectedDiscount = new Discount()
+            .setOldPrice(new BigDecimal("134.90"))
+            .setDiscount(BigDecimal.valueOf(2L))
+            .setPercentage(BigDecimal.valueOf(1.48F));
+
+        verifyDiscount(discount, expectedDiscount);
 
         //        ImageDto image = dataDto.getImage();
         //        assertAll("image",

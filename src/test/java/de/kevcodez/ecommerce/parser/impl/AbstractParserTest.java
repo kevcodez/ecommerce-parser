@@ -1,5 +1,6 @@
 package de.kevcodez.ecommerce.parser.impl;
 
+import static org.assertj.core.api.Assertions.withinPercentage;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
+import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import lombok.SneakyThrows;
 
 class AbstractParserTest {
@@ -37,6 +39,14 @@ class AbstractParserTest {
             () -> assertThat(variant.getUrl()).isEqualTo(expected.getUrl()),
             () -> assertThat(variant.getHeight()).isEqualTo(expected.getHeight()),
             () -> assertThat(variant.getWidth()).isEqualTo(expected.getWidth()));
+    }
+
+    void verifyDiscount(Discount discount, Discount expectedDiscount) {
+        assertAll("Discount",
+            () -> assertThat(discount.getOldPrice()).isCloseTo(expectedDiscount.getOldPrice(), withinPercentage(0.1D)),
+            () -> assertThat(discount.getDiscount()).isCloseTo(expectedDiscount.getDiscount(), withinPercentage(0.1D)),
+            () -> assertThat(discount.getPercentage()).isCloseTo(expectedDiscount.getPercentage(), withinPercentage(0.1D))
+        );
     }
 
 }

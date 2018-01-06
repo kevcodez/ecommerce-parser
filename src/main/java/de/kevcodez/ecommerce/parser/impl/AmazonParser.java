@@ -90,7 +90,11 @@ public class AmazonParser extends AbstractProductParser {
                 BigDecimal oldPrice = priceStringToBigDecimal(oldPriceAsText);
                 BigDecimal discountValue = priceStringToBigDecimal(matcherDiscount.group(1));
                 BigDecimal percentage = new BigDecimal(matcherDiscount.group(2));
-                return new Discount(oldPrice, discountValue, percentage);
+
+                return new Discount()
+                    .setOldPrice(oldPrice)
+                    .setDiscount(discountValue)
+                    .setPercentage(percentage);
             }
         }
 

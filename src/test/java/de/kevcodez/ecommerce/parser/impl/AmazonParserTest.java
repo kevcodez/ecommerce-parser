@@ -84,16 +84,15 @@ class AmazonParserTest extends AbstractParserTest {
 
         Product product = amazonParser.parse(VALID_AMAZON_DE_URL);
         Price price = product.getPrice();
-        assertAll("Price",
-            () -> assertThat(price.getCurrentPrice()).isEqualTo(new BigDecimal("12.99")),
-            () -> assertThat(price.getCurrency().getCurrencyCode()).isEqualTo("EUR"));
+
+        assertThat(price.getCurrentPrice()).isCloseTo(new BigDecimal("12.99"), withinPercentage(0.1D));
 
         Discount discount = price.getDiscount();
-        assertAll("Discount",
-            () -> assertThat(discount.getOldPrice()).isCloseTo(new BigDecimal("25.99"), withinPercentage(0.1D)),
-            () -> assertThat(discount.getValue()).isCloseTo(new BigDecimal("13.00"), withinPercentage(0.1D)),
-            () -> assertThat(discount.getPercentage()).isCloseTo(new BigDecimal("50"), withinPercentage(0.1D))
-        );
+        Discount expectedDiscount = new Discount().setOldPrice(new BigDecimal(25.99))
+            .setDiscount(new BigDecimal("13.00"))
+            .setPercentage(new BigDecimal("50"));
+
+        verifyDiscount(discount, expectedDiscount);
     }
 
     @ParameterizedTest
