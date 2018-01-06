@@ -19,5 +19,4 @@ public class Price {
         this.currency = Currency.getInstance(currencyCode);
         this.discount = discount;
     }
-
 }

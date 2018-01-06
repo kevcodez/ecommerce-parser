@@ -7,7 +7,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Currency;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -25,10 +25,9 @@ import de.kevcodez.ecommerce.parser.domain.product.Product;
 class AmazonParserTest extends AbstractParserTest {
 
     private static final String SAMPLE_GAME_OF_THRONES_S7 = "/amazon/sample_game_of_thrones_s7";
-    private static final String SAMPLE_YELLOW_DUCK = "/amazon/sample_yellow_duck";
     private static final String SAMPLE_DISCOUNTED = "/amazon/sample_discounted";
 
-    private static final String VALID_AMAZON_URL = "https://www.amazon.de/gp/product/B002OLT9R8";
+    private static final String VALID_AMAZON_DE_URL = "https://www.amazon.de/gp/product/B002OLT9R8";
 
     private AmazonParser amazonParser;
 
@@ -41,12 +40,12 @@ class AmazonParserTest extends AbstractParserTest {
     void parseSampleGamesOfThronesS7() {
         when(websiteSourceDownloader.download(anyString())).thenReturn(getResourceAsString(SAMPLE_GAME_OF_THRONES_S7));
 
-        Product product = amazonParser.parse(VALID_AMAZON_URL);
+        Product product = amazonParser.parse(VALID_AMAZON_DE_URL);
 
         // Base data
         assertAll("Base Data",
             () -> assertThat(product.getTitle()).isEqualTo("Game of Thrones: Die komplette 7. Staffel [Blu-ray]"),
-            () -> assertThat(product.getUrl()).isEqualTo(VALID_AMAZON_URL),
+            () -> assertThat(product.getUrl()).isEqualTo(VALID_AMAZON_DE_URL),
             () -> assertThat(product.getExternalId()).isEqualTo("B0743DGBT8")
         );
 
@@ -80,48 +79,10 @@ class AmazonParserTest extends AbstractParserTest {
     }
 
     @Test
-    void parseSampleYellowDuck() {
-        when(websiteSourceDownloader.download(anyString())).thenReturn(getResourceAsString(SAMPLE_YELLOW_DUCK));
-
-        Product product = amazonParser.parse(VALID_AMAZON_URL);
-
-        assertAll("Base Data",
-            () -> assertThat(product.getTitle())
-                .isEqualTo("gelbe Ente Schlüsselanhänger Figur mit LED und Sound \"NaagNaagNag\" Ente"),
-            () -> assertThat(product.getUrl()).isEqualTo(VALID_AMAZON_URL),
-            () -> assertThat(product.getExternalId()).isEqualTo("B01MYE2CZS")
-        );
-
-        Price price = product.getPrice();
-        assertAll("Price",
-            () -> assertThat(price.getCurrentPrice()).isEqualTo(new BigDecimal("8.90")));
-
-        List<ImageDto> images = product.getImages();
-        assertThat(images.size()).isEqualTo(3);
-
-        ImageDto firstImage = product.getImages().get(0);
-        assertThat(firstImage.getVariants().size()).isEqualTo(5);
-
-        ImageVariant firstImageVariant = firstImage.getVariants().get(0);
-        verifyImageVariant(firstImageVariant, ImageVariant.builder()
-            .url("https://images-na.ssl-images-amazon.com/images/I/31XbLyqykGL._SY355_.jpg")
-            .height(355)
-            .width(354)
-            .build());
-
-        ImageVariant secondImageVariant = firstImage.getVariants().get(1);
-        verifyImageVariant(secondImageVariant, ImageVariant.builder()
-            .url("https://images-na.ssl-images-amazon.com/images/I/31XbLyqykGL._SY450_.jpg")
-            .height(450)
-            .width(449)
-            .build());
-    }
-
-    @Test
     void parseSampleDiscounted() {
         when(websiteSourceDownloader.download(anyString())).thenReturn(getResourceAsString(SAMPLE_DISCOUNTED));
 
-        Product product = amazonParser.parse(VALID_AMAZON_URL);
+        Product product = amazonParser.parse(VALID_AMAZON_DE_URL);
         Price price = product.getPrice();
         assertAll("Price",
             () -> assertThat(price.getCurrentPrice()).isEqualTo(new BigDecimal("12.99")),
@@ -133,6 +94,23 @@ class AmazonParserTest extends AbstractParserTest {
             () -> assertThat(discount.getValue()).isCloseTo(new BigDecimal("13.00"), withinPercentage(0.1D)),
             () -> assertThat(discount.getPercentage()).isCloseTo(new BigDecimal("50"), withinPercentage(0.1D))
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("internationalUrls")
+    void parseCurrencyCode(String url, String expectedCurrencySymbolic) {
+        when(websiteSourceDownloader.download(anyString())).thenReturn(getResourceAsString(SAMPLE_DISCOUNTED));
+
+        Product product = amazonParser.parse(url);
+        Currency currency = product.getPrice().getCurrency();
+        assertThat(currency).isNotNull();
+        assertThat(currency.getCurrencyCode()).isEqualTo(expectedCurrencySymbolic);
+    }
+
+    private static Stream<Arguments> internationalUrls() {
+        return Stream.of(
+            Arguments.of("https://amazon.de/123", "EUR"),
+            Arguments.of("http://amazon.com/123", "USD"));
     }
 
     @ParameterizedTest

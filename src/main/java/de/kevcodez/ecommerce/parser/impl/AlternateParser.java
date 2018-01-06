@@ -12,7 +12,6 @@ import org.jsoup.select.Elements;
 import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
-import de.kevcodez.ecommerce.parser.domain.price.Price;
 
 public class AlternateParser extends AbstractProductParser {
 
@@ -49,16 +48,19 @@ public class AlternateParser extends AbstractProductParser {
     }
 
     @Override
-    Price parsePrice(Document document) {
+    BigDecimal parseCurrentPrice(Document document) {
         String price = document.select("div.price").attr("data-standard-price");
 
-        BigDecimal currentPrice = new BigDecimal(price);
-        Discount discount = parseDiscount(document, currentPrice);
-
-        return new Price(currentPrice, "EUR", discount);
+        return new BigDecimal(price);
     }
 
-    private Discount parseDiscount(Document document, BigDecimal currentPrice) {
+    @Override
+    String parseCurrencyCode(String url, Document document) {
+        return "EUR";
+    }
+
+    @Override
+    Discount parseDiscount(BigDecimal currentPrice, Document document) {
         String discountAsText = document.select("div.productShort > span.strikedPrice").text();
 
         if (discountAsText != null) {

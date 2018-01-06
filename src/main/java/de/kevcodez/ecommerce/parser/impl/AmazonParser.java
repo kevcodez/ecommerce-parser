@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
-import de.kevcodez.ecommerce.parser.domain.price.Price;
 import lombok.SneakyThrows;
 
 public class AmazonParser extends AbstractProductParser {
@@ -27,7 +26,7 @@ public class AmazonParser extends AbstractProductParser {
 
     private static final Pattern PATTERN_DISCOUNT = Pattern.compile("(\\d+,\\d+).\\((\\d+)%\\)");
 
-    private static final Pattern PATTERN_PRICE = Pattern.compile("\\d+,\\d+");
+    private static final Pattern PATTERN_PRICE = Pattern.compile("\\d+.\\d+");
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -51,23 +50,38 @@ public class AmazonParser extends AbstractProductParser {
     }
 
     @Override
-    Price parsePrice(Document document) {
-        String price = document.select("span.a-size-medium.a-color-price.offer-price.a-text-normal").text();
+    BigDecimal parseCurrentPrice(Document document) {
+        String priceAsString = document.select("span.a-size-medium.a-color-price.offer-price.a-text-normal").text();
 
-        if (price.isEmpty()) {
-            price = document.select("span#priceblock_ourprice").text();
+        if (priceAsString.isEmpty()) {
+            priceAsString = document.select("span#priceblock_ourprice").text();
         }
 
-        if (price.isEmpty()) {
-            price = document.select("span#priceblock_saleprice").text();
+        if (priceAsString.isEmpty()) {
+            priceAsString = document.select("span#priceblock_saleprice").text();
         }
 
-        Discount discount = parseDiscount(document);
+        if (priceAsString.isEmpty()) {
+            priceAsString = document.select("span#priceblock_dealprice").text();
+        }
 
-        return new Price(priceStringToBigDecimal(price), "EUR", discount);
+        return priceStringToBigDecimal(priceAsString);
     }
 
-    private Discount parseDiscount(Document document) {
+    @Override
+    String parseCurrencyCode(String url, Document document) {
+        if (url.contains("amazon.de")) {
+            return "EUR";
+        }
+        else if (url.contains("amazon.com")) {
+            return "USD";
+        }
+
+        throw new IllegalArgumentException("Currency code could not be parsed");
+    }
+
+    @Override
+    Discount parseDiscount(BigDecimal currentPrice, Document document) {
         String discountAsText = document.select("tr#regularprice_savings > td.a-color-price").text();
         if (discountAsText != null) {
             Matcher matcherDiscount = PATTERN_DISCOUNT.matcher(discountAsText);

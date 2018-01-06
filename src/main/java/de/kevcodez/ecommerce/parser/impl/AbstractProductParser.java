@@ -1,5 +1,6 @@
 package de.kevcodez.ecommerce.parser.impl;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.domain.price.Price;
 import de.kevcodez.ecommerce.parser.domain.product.Product;
 
@@ -14,7 +16,7 @@ public abstract class AbstractProductParser {
 
     private WebsiteSourceDownloader websiteSourceDownloader;
 
-    public AbstractProductParser(WebsiteSourceDownloader websiteSourceDownloader) {
+    AbstractProductParser(WebsiteSourceDownloader websiteSourceDownloader) {
         this.websiteSourceDownloader = websiteSourceDownloader;
     }
 
@@ -26,7 +28,13 @@ public abstract class AbstractProductParser {
         String externalId = parseExternalId(document);
         String title = parseTitle(document);
         String description = parseDescription(document);
-        Price price = parsePrice(document);
+
+        BigDecimal currentPrice = parseCurrentPrice(document);
+        String currencyCode = parseCurrencyCode(url, document);
+        Discount discount = parseDiscount(currentPrice, document);
+
+        Price price = new Price(currentPrice, currencyCode, discount);
+
         List<ImageDto> images = parseImages(document);
 
         return Product.builder()
@@ -47,7 +55,11 @@ public abstract class AbstractProductParser {
 
     abstract String parseDescription(Document document);
 
-    abstract Price parsePrice(Document document);
+    abstract BigDecimal parseCurrentPrice(Document document);
+
+    abstract String parseCurrencyCode(String url, Document document);
+
+    abstract Discount parseDiscount(BigDecimal currentPrice, Document document);
 
     abstract List<ImageDto> parseImages(Document document);
 
