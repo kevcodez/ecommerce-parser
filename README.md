@@ -1,9 +1,6 @@
 This project aims at providing a simple parser for the top 100 e commerce websites. This project is in an extremely early stage.
 
-Currently supported
-
-* Amazon.de
-* Alternate.de
+# Usage
 
 Using the parser is as simple as it gets:
 
@@ -55,3 +52,9 @@ The product contains information about a product such as the title, description,
   ]
 }
 ```
+
+# Currently supported
+
+* Amazon.de, Amazon.com
+* Alternate.de
+* Bonprix.de
