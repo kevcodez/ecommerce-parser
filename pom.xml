@@ -23,6 +23,10 @@
         <assertj.version>3.8.0</assertj.version>
         <junit.version>5.0.2</junit.version>
         <mockito.version>2.13.0</mockito.version>
+
+        <!-- Plugins -->
+        <plugin.jacoco.version>0.8.0</plugin.jacoco.version>
+        <plugin.coveralls.version>4.3.0</plugin.coveralls.version>
     </properties>
 
     <dependencies>
@@ -78,5 +82,31 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${plugin.jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${plugin.coveralls.version}</version>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>
