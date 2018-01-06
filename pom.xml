@@ -15,9 +15,9 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- Versions -->
-        <lombok.version>1.16.18</lombok.version>
         <jackson.version>2.9.3</jackson.version>
         <jsoup.version>1.11.2</jsoup.version>
+        <lombok.version>1.16.18</lombok.version>
 
         <!-- Testing purposes -->
         <assertj.version>3.8.0</assertj.version>

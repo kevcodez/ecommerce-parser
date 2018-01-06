@@ -7,14 +7,14 @@ import java.util.Optional;
 import de.kevcodez.ecommerce.parser.domain.product.Product;
 import de.kevcodez.ecommerce.parser.impl.AlternateParser;
 import de.kevcodez.ecommerce.parser.impl.AmazonParser;
-import de.kevcodez.ecommerce.parser.impl.ProductParser;
+import de.kevcodez.ecommerce.parser.impl.AbstractProductParser;
 import de.kevcodez.ecommerce.parser.impl.WebsiteSourceDownloader;
 
 public enum ECommerceParser {
 
     INSTANCE;
 
-    private List<ProductParser> parsers = new ArrayList<>();
+    private List<AbstractProductParser> parsers = new ArrayList<>();
 
     private WebsiteSourceDownloader websiteSourceDownloader = new WebsiteSourceDownloader();
 
@@ -24,7 +24,7 @@ public enum ECommerceParser {
     }
 
     public Product parseLink(String url) {
-        Optional<ProductParser> linkDataParser = parsers.stream()
+        Optional<AbstractProductParser> linkDataParser = parsers.stream()
             .filter(parser -> parser.matches(url))
             .findFirst();
 

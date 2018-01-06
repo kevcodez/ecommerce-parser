@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -17,10 +16,9 @@ import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.domain.price.Price;
-import de.kevcodez.ecommerce.parser.domain.product.Product;
 import lombok.SneakyThrows;
 
-public class AmazonParser implements ProductParser {
+public class AmazonParser extends AbstractProductParser {
 
     private static final Pattern PATTERN_AMAZON = Pattern.compile("((http(s?)://)?(www\\.)?)amazon\\.(.+)");
 
@@ -31,10 +29,8 @@ public class AmazonParser implements ProductParser {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private WebsiteSourceDownloader websiteSourceDownloader;
-
     public AmazonParser(WebsiteSourceDownloader websiteSourceDownloader) {
-        this.websiteSourceDownloader = websiteSourceDownloader;
+        super(websiteSourceDownloader);
     }
 
     @Override
@@ -43,34 +39,17 @@ public class AmazonParser implements ProductParser {
     }
 
     @Override
-    public Product parse(String url) {
-        Document document = Jsoup.parse(websiteSourceDownloader.download(url));
-
-        String title = parseTitle(document);
-        String description = parseDescription(document);
-        Price price = parsePrice(document);
-        String asin = parseAsin(document);
-        List<ImageDto> images = parseImages(document);
-
-        return Product.builder()
-            .price(price)
-            .title(title)
-            .description(description)
-            .url(url)
-            .images(images)
-            .externalId(asin)
-            .build();
-    }
-
-    private String parseTitle(Document document) {
+    String parseTitle(Document document) {
         return document.select("span#productTitle").text();
     }
 
-    private String parseDescription(Document document) {
+    @Override
+    String parseDescription(Document document) {
         return document.select("div#productDescription > p:first-child").text();
     }
 
-    private Price parsePrice(Document document) {
+    @Override
+    Price parsePrice(Document document) {
         String price = document.select("span.a-size-medium.a-color-price.offer-price.a-text-normal").text();
 
         if (price.isEmpty()) {
@@ -102,13 +81,16 @@ public class AmazonParser implements ProductParser {
         return null;
     }
 
-    private String parseAsin(Document document) {
+    @Override
+    String parseExternalId(Document document) {
         return document.select("input#ASIN").val();
     }
 
     @SneakyThrows
-    private List<ImageDto> parseImages(Document document) {
+    @Override
+    List<ImageDto> parseImages(Document document) {
         TypeReference<Map<String, List<Integer>>> typeRef = new TypeReference<Map<String, List<Integer>>>() {
+
         };
 
         List<ImageDto> images = new ArrayList<>();

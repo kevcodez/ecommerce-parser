@@ -65,7 +65,7 @@ class AlternateParserTest extends AbstractParserTest {
         Discount discount = product.getPrice().getDiscount();
         assertAll("Discount",
             () -> assertThat(discount.getValue()).isCloseTo(BigDecimal.valueOf(2L), withPercentage(0.1)),
-            () -> assertThat(discount.getPercentage()).isCloseTo(BigDecimal.valueOf(1.4F), withPercentage(0.1)));
+            () -> assertThat(discount.getPercentage()).isCloseTo(BigDecimal.valueOf(1.48F), withPercentage(0.1)));
 
         //        ImageDto image = dataDto.getImage();
         //        assertAll("image",

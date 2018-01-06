@@ -21,8 +21,9 @@ public class Discount {
 
     public static Discount of(BigDecimal oldPrice, BigDecimal newPrice) {
         BigDecimal discount = oldPrice.subtract(newPrice);
-        BigDecimal percentage = discount.divide(oldPrice, 2, RoundingMode.HALF_UP)
-            .multiply(BigDecimal.valueOf(100L));
+        BigDecimal percentage = discount.divide(oldPrice, 4, RoundingMode.HALF_UP)
+            .multiply(BigDecimal.valueOf(100L))
+            .setScale(2, RoundingMode.HALF_UP);
 
         return new Discount(discount, percentage);
     }
