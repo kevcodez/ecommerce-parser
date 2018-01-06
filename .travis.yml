@@ -1,0 +1,13 @@
+language: java
+jdk:
+  - oraclejdk8
+install: mvn dependency:resolve
+cache:
+  directories:
+  - $HOME/.m2
+  - bundler
+  - packages
+script:
+  - mvn clean install -DskipTests -U -Dmaven.javadoc.skip=true
+after_success:
+- mvn clean test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=$COVERALLS_REPO_TOKEN -U
