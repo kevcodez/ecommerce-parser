@@ -9,6 +9,7 @@ import de.kevcodez.ecommerce.parser.impl.AlternateParser;
 import de.kevcodez.ecommerce.parser.impl.AmazonParser;
 import de.kevcodez.ecommerce.parser.impl.AbstractProductParser;
 import de.kevcodez.ecommerce.parser.impl.BonPrixParser;
+import de.kevcodez.ecommerce.parser.impl.ConradParser;
 import de.kevcodez.ecommerce.parser.impl.WebsiteSourceDownloader;
 
 public enum ECommerceParser {
@@ -23,6 +24,7 @@ public enum ECommerceParser {
         parsers.add(new AlternateParser(websiteSourceDownloader));
         parsers.add(new AmazonParser(websiteSourceDownloader));
         parsers.add(new BonPrixParser(websiteSourceDownloader));
+        parsers.add(new ConradParser(websiteSourceDownloader));
     }
 
     public Product parseLink(String url) {

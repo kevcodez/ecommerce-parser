@@ -60,7 +60,8 @@ The product contains information about a product such as the title, description,
 
 * Amazon.de, Amazon.com
 * Alternate.de
-* Bonprix.de
+* Bonprix.de (Images Missing)
+* Conrad.de, Conrad.it (Images Missing)
 
 # Development
 
