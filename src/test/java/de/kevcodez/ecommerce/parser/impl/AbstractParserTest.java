@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
+import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 import lombok.SneakyThrows;
 
 class AbstractParserTest {

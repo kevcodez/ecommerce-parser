@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 
 import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
+import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 
 public class BonPrixParser extends AbstractProductParser {
 

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
+import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 import lombok.SneakyThrows;
 
 public class AmazonParser extends AbstractProductParser {

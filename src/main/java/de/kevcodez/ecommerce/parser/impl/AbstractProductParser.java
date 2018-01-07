@@ -11,6 +11,7 @@ import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.domain.price.Price;
 import de.kevcodez.ecommerce.parser.domain.product.Product;
+import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 
 public abstract class AbstractProductParser {
 

@@ -7,22 +7,18 @@ import java.util.List;
 import java.util.Optional;
 
 import de.kevcodez.ecommerce.parser.domain.product.Product;
+import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 import de.kevcodez.ecommerce.parser.impl.AbstractProductParser;
 import de.kevcodez.ecommerce.parser.impl.AlternateParser;
 import de.kevcodez.ecommerce.parser.impl.AmazonParser;
 import de.kevcodez.ecommerce.parser.impl.BonPrixParser;
 import de.kevcodez.ecommerce.parser.impl.ConradParser;
-import de.kevcodez.ecommerce.parser.impl.WebsiteSourceDownloader;
 
-public enum ECommerceParser {
-
-    INSTANCE;
+public class ECommerceParser {
 
     private final List<AbstractProductParser> parsers = new ArrayList<>();
 
-    private final WebsiteSourceDownloader websiteSourceDownloader = new WebsiteSourceDownloader();
-
-    ECommerceParser() {
+    public ECommerceParser(WebsiteSourceDownloader websiteSourceDownloader) {
         parsers.add(new AlternateParser(websiteSourceDownloader));
         parsers.add(new AmazonParser(websiteSourceDownloader));
         parsers.add(new BonPrixParser(websiteSourceDownloader));

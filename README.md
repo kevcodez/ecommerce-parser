@@ -11,7 +11,10 @@ Using the parser is as simple as it gets:
 class Test {
     
     public static void main(String[] args) {
-        Product product = ECommerceParser.INSTANCE.parseLink("https://www.alternate.de/html/product/1289011"); 
+        WebsiteSourceDownloader websiteSourceDownloader = new JsoupSourceDownloader();
+        ECommerceParser eCommerceParser = new ECommerceParser(websiteSourceDownloader);
+        
+        Product product = eCommerceParser.parseLink("https://www.alternate.de/html/product/1289011"); 
     }
 }
 ```

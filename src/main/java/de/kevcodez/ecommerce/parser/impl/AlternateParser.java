@@ -14,6 +14,7 @@ import org.jsoup.select.Elements;
 import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
+import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 
 public class AlternateParser extends AbstractProductParser {
 

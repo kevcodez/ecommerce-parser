@@ -1,4 +1,4 @@
-package de.kevcodez.ecommerce.parser.impl;
+package de.kevcodez.ecommerce.parser.downloader;
 
 import java.nio.charset.StandardCharsets;
 
@@ -6,7 +6,7 @@ import org.jsoup.Jsoup;
 
 import lombok.SneakyThrows;
 
-public class WebsiteSourceDownloader {
+public class JsoupSourceDownloader implements WebsiteSourceDownloader {
 
     @SneakyThrows
     public String download(String url) {
