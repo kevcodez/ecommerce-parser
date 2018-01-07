@@ -1,5 +1,7 @@
 package de.kevcodez.ecommerce.parser.impl;
 
+import static java.util.Arrays.asList;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +21,6 @@ import lombok.SneakyThrows;
 
 public class AmazonParser extends AbstractProductParser {
 
-    private static final Pattern PATTERN_AMAZON = Pattern.compile("((http(s?)://)?(www\\.)?)amazon\\.(.+)");
-
     private static final Pattern PATTERN_IMAGES = Pattern
         .compile("(?<='colorImages':.\\{.'initial':.)([\\S\\s]+)(?=},\\s+'colorToAsin')");
 
@@ -35,8 +35,8 @@ public class AmazonParser extends AbstractProductParser {
     }
 
     @Override
-    public boolean matches(String url) {
-        return PATTERN_AMAZON.matcher(url).matches();
+    public List<String> supportedDomains() {
+        return asList("amazon.de", "amazon.com");
     }
 
     @Override

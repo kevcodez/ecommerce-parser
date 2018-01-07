@@ -1,9 +1,10 @@
 package de.kevcodez.ecommerce.parser.impl;
 
+import static java.util.Arrays.asList;
+
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.jsoup.nodes.Document;
@@ -15,15 +16,13 @@ import de.kevcodez.ecommerce.parser.domain.price.Discount;
 
 public class ConradParser extends AbstractProductParser {
 
-    private static final Pattern PATTERN_CONRAD = Pattern.compile("((http(s?)://)?(www\\.)?)conrad\\.(.+)");
-
     public ConradParser(WebsiteSourceDownloader websiteSourceDownloader) {
         super(websiteSourceDownloader);
     }
 
     @Override
-    public boolean matches(String url) {
-        return PATTERN_CONRAD.matcher(url).matches();
+    List<String> supportedDomains() {
+        return asList("conrad.de", "conrad.it");
     }
 
     @Override

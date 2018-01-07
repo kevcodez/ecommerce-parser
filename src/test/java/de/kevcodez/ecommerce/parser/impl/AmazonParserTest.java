@@ -120,15 +120,10 @@ class AmazonParserTest extends AbstractParserTest {
 
     private static Stream<Arguments> dataUrls() {
         return Stream.of(
-            Arguments.of("https://amazon.de", true),
-            Arguments.of("http://amazon.de", true),
-            Arguments.of("www.amazon.de", true),
-            Arguments.of("https://amazon.com", true),
-            Arguments.of("http://amazon.com", true),
-            Arguments.of("www.amazon.com", true),
-            Arguments.of("https://www.amazon.com", true),
-            Arguments.of("http://www.amazon.com", true),
-            Arguments.of("http://amazon-foo.de", false)
+            Arguments.of("amazon.de", true),
+            Arguments.of("amazon.com", true),
+            Arguments.of("amazona.de", false),
+            Arguments.of("amazon.foo", false)
         );
     }
 

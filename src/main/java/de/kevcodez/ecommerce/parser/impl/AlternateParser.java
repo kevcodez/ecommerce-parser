@@ -1,5 +1,7 @@
 package de.kevcodez.ecommerce.parser.impl;
 
+import static java.util.Collections.singletonList;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +17,6 @@ import de.kevcodez.ecommerce.parser.domain.price.Discount;
 
 public class AlternateParser extends AbstractProductParser {
 
-    private static final Pattern PATTERN_URL = Pattern.compile("((http(s?)://)?(www\\.)?)alternate\\.(.+)");
-
     private static final Pattern PATTERN_DISCOUNT = Pattern.compile("\\d+,\\d+");
 
     private static final String ALTERNATE_URL = "https://www.alternate.de";
@@ -26,8 +26,8 @@ public class AlternateParser extends AbstractProductParser {
     }
 
     @Override
-    public boolean matches(String url) {
-        return PATTERN_URL.matcher(url).matches();
+    List<String> supportedDomains() {
+        return singletonList("alternate.de");
     }
 
     @Override

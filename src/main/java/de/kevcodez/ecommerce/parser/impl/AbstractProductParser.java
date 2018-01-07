@@ -50,7 +50,11 @@ public abstract class AbstractProductParser {
             .build();
     }
 
-    public abstract boolean matches(String url);
+    public boolean matches(String domain) {
+        return supportedDomains().contains(domain);
+    }
+
+    abstract List<String> supportedDomains();
 
     abstract String parseExternalId(Document document);
 

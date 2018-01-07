@@ -1,5 +1,7 @@
 package de.kevcodez.ecommerce.parser.impl;
 
+import static java.util.Collections.singletonList;
+
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
@@ -16,8 +18,8 @@ public class BonPrixParser extends AbstractProductParser {
     }
 
     @Override
-    public boolean matches(String url) {
-        return false;
+    List<String> supportedDomains() {
+        return singletonList("bonprix.de");
     }
 
     @Override
