@@ -13,6 +13,7 @@ import de.kevcodez.ecommerce.parser.impl.AlternateParser;
 import de.kevcodez.ecommerce.parser.impl.AmazonParser;
 import de.kevcodez.ecommerce.parser.impl.BonPrixParser;
 import de.kevcodez.ecommerce.parser.impl.ConradParser;
+import de.kevcodez.ecommerce.parser.impl.CyberportParser;
 
 public class ECommerceParser {
 
@@ -23,6 +24,7 @@ public class ECommerceParser {
         parsers.add(new AmazonParser(websiteSourceDownloader));
         parsers.add(new BonPrixParser(websiteSourceDownloader));
         parsers.add(new ConradParser(websiteSourceDownloader));
+        parsers.add(new CyberportParser(websiteSourceDownloader));
     }
 
     public Product parseLink(String url) throws URISyntaxException {
