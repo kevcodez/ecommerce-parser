@@ -1,16 +1,19 @@
 package de.kevcodez.ecommerce.parser.impl;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.withinPercentage;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.domain.price.Price;
 import de.kevcodez.ecommerce.parser.domain.product.Product;
@@ -48,7 +51,32 @@ class BonprixParserTest extends AbstractParserTest {
 
     @Test
     void imagesRegular() {
-        // TODO
+        when(websiteSourceDownloader.download(anyString())).thenReturn(getResourceAsString(SAMPLE_REGULAR));
+
+        Product product = bonPrixParser.parse(VALID_URL);
+
+        List<ImageDto> images = product.getImages();
+        assertThat(images).hasSize(7);
+
+        ImageDto firstImage = images.get(0);
+
+        assertThat(firstImage.getVariants()).hasSize(3);
+
+        assertThat(firstImage.getVariants()).contains(ImageVariant.builder()
+            .url("https://image01.bonprix.de/assets/319x448/1511338838/15045955-hDEd0CBM.jpg")
+            .height(319)
+            .width(448)
+            .build());
+        assertThat(firstImage.getVariants()).contains(ImageVariant.builder()
+            .url("https://image01.bonprix.de/assets/31x44/1511338838/15045955-hDEd0CBM.jpg")
+            .height(31)
+            .width(44)
+            .build());
+        assertThat(firstImage.getVariants()).contains(ImageVariant.builder()
+            .url("https://image01.bonprix.de/assets/957x1344/1511338838/15045955-hDEd0CBM.jpg")
+            .height(957)
+            .width(1344)
+            .build());
     }
 
     @Test

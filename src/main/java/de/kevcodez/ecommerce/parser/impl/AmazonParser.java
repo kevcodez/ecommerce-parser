@@ -20,7 +20,7 @@ import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 import lombok.SneakyThrows;
 
-public class AmazonParser extends AbstractProductParser {
+public class AmazonParser extends JsoupProductParser {
 
     private static final Pattern PATTERN_IMAGES = Pattern
         .compile("(?<='colorImages':.\\{.'initial':.)([\\S\\s]+)(?=},\\s+'colorToAsin')");

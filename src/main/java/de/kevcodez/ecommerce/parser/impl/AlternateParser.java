@@ -16,7 +16,7 @@ import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 
-public class AlternateParser extends AbstractProductParser {
+public class AlternateParser extends JsoupProductParser {
 
     private static final Pattern PATTERN_DISCOUNT = Pattern.compile("\\d+,\\d+");
 

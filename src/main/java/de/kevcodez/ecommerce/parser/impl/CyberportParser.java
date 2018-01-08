@@ -12,7 +12,7 @@ import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 
-public class CyberportParser extends AbstractProductParser {
+public class CyberportParser extends JsoupProductParser {
 
     private static final Pattern PATTERN_EXTERNAL_ID = Pattern.compile("([A-Z]|[0-9])+-([A-Z]|[0-9])+_([A-Z]|[0-9])+");
 

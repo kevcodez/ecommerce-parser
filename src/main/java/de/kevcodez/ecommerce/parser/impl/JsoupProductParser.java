@@ -13,14 +13,15 @@ import de.kevcodez.ecommerce.parser.domain.price.Price;
 import de.kevcodez.ecommerce.parser.domain.product.Product;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 
-public abstract class AbstractProductParser {
+public abstract class JsoupProductParser implements ProductParser {
 
     private final WebsiteSourceDownloader websiteSourceDownloader;
 
-    AbstractProductParser(WebsiteSourceDownloader websiteSourceDownloader) {
+    JsoupProductParser(WebsiteSourceDownloader websiteSourceDownloader) {
         this.websiteSourceDownloader = websiteSourceDownloader;
     }
 
+    @Override
     public Product parse(String url) {
         String websiteSource = websiteSourceDownloader.download(url);
 

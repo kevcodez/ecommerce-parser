@@ -15,7 +15,7 @@ import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 
-public class ConradParser extends AbstractProductParser {
+public class ConradParser extends JsoupProductParser {
 
     public ConradParser(WebsiteSourceDownloader websiteSourceDownloader) {
         super(websiteSourceDownloader);

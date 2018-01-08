@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import de.kevcodez.ecommerce.parser.domain.product.Product;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
-import de.kevcodez.ecommerce.parser.impl.AbstractProductParser;
+import de.kevcodez.ecommerce.parser.impl.JsoupProductParser;
 import de.kevcodez.ecommerce.parser.impl.AlternateParser;
 import de.kevcodez.ecommerce.parser.impl.AmazonParser;
 import de.kevcodez.ecommerce.parser.impl.BonPrixParser;
@@ -17,7 +17,7 @@ import de.kevcodez.ecommerce.parser.impl.CyberportParser;
 
 public class ECommerceParser {
 
-    private final List<AbstractProductParser> parsers = new ArrayList<>();
+    private final List<JsoupProductParser> parsers = new ArrayList<>();
 
     public ECommerceParser(WebsiteSourceDownloader websiteSourceDownloader) {
         parsers.add(new AlternateParser(websiteSourceDownloader));
@@ -30,7 +30,7 @@ public class ECommerceParser {
     public Product parseLink(String url) throws URISyntaxException {
         String domainName = getDomainName(url);
 
-        Optional<AbstractProductParser> linkDataParser = parsers.stream()
+        Optional<JsoupProductParser> linkDataParser = parsers.stream()
             .filter(parser -> parser.matches(domainName))
             .findFirst();
 
