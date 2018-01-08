@@ -13,7 +13,7 @@ import de.kevcodez.ecommerce.parser.domain.price.Price;
 import de.kevcodez.ecommerce.parser.domain.product.Product;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 
-public abstract class JsoupProductParser implements ProductParser {
+abstract class JsoupProductParser implements ProductParser {
 
     private final WebsiteSourceDownloader websiteSourceDownloader;
 

@@ -6,4 +6,6 @@ public interface ProductParser {
 
     Product parse(String url);
 
+    boolean matches(String domain);
+
 }
