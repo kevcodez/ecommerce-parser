@@ -64,10 +64,10 @@ The product contains information about a product such as the title, description,
 * Amazon.de, Amazon.com
 * Alternate.de
 * Bonprix.de
+* Conrad.de, Conrad.it
 
 Partially: 
 
-* Conrad.de, Conrad.it (Images Missing)
 * Cyberport.de (Images missing)
 
 # Development

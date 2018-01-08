@@ -7,10 +7,13 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.kevcodez.ecommerce.parser.domain.image.Image;
+import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.domain.price.Price;
 import de.kevcodez.ecommerce.parser.domain.product.Product;
@@ -48,11 +51,6 @@ class ConradParserTest extends AbstractParserTest {
     }
 
     @Test
-    void imagesRegular() {
-        // TODO
-    }
-
-    @Test
     void sampleDiscount() {
         when(websiteSourceDownloader.download(anyString())).thenReturn(getResourceAsString(SAMPLE_DISCOUNTED));
 
@@ -68,6 +66,34 @@ class ConradParserTest extends AbstractParserTest {
             .setPercentage(BigDecimal.valueOf(25.46D));
 
         verifyDiscount(discount, expectedDiscount);
+    }
+
+    @Test
+    void imagesRegular() {
+        when(websiteSourceDownloader.download(anyString())).thenReturn(getResourceAsString(SAMPLE_REGULAR));
+
+        Product product = conradParser.parse(VALID_URL);
+        List<Image> images = product.getImages();
+
+        assertThat(images).hasSize(4);
+
+        Image firstImage = images.get(0);
+        List<ImageVariant> firstImageVariants = firstImage.getVariants();
+        assertThat(firstImageVariants).hasSize(2);
+
+        assertThat(firstImageVariants).contains(ImageVariant.builder()
+            .url(
+                "https://asset.conrad.com/media10/isa/160267/c1/-/de/1419717_GB_01_FB/raspberry-pi-3-model-b-advanced-set-1-gb.jpg?x=520&y=520")
+            .width(520)
+            .height(520)
+            .build());
+
+        assertThat(firstImageVariants).contains(ImageVariant.builder()
+            .url(
+                "https://asset.conrad.com/media10/isa/160267/c1/-/de/1419717_GB_01_FB/raspberry-pi-3-model-b-advanced-set-1-gb.jpg?x=76&y=76")
+            .width(76)
+            .height(76)
+            .build());
     }
 
 }
