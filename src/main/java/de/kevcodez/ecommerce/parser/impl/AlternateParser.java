@@ -88,7 +88,7 @@ public class AlternateParser extends JsoupProductParser {
         List<Image> images = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            String suffix = i == 0 ? "" : String.valueOf(i);
+            String suffix = i == 0 ? "" : "_" + String.valueOf(i);
 
             Image image = new Image();
             image.addVariant(ImageVariant.builder()
@@ -101,10 +101,6 @@ public class AlternateParser extends JsoupProductParser {
                 .url(ALTERNATE_URL + "/p/50x50/h/AMD_Ryzen_5_1400_WRAITH__Prozessor@@" + articleId + suffix + ".jpg")
                 .width(50)
                 .height(50)
-                .build());
-
-            image.addVariant(ImageVariant.builder()
-                .url(ALTERNATE_URL + "/p/o/h/AMD_Ryzen_5_1400_WRAITH__Prozessor@@" + articleId + suffix + ".jpg")
                 .build());
 
             images.add(image);
