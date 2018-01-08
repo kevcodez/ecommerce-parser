@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,7 +83,9 @@ public class AmazonParser extends JsoupProductParser {
     }
 
     @Override
-    Discount parseDiscount(BigDecimal currentPrice, Document document) {
+    Optional<Discount> parseDiscount(BigDecimal currentPrice, Document document) {
+        Discount discount = null;
+
         String discountAsText = document.select("tr#regularprice_savings > td.a-color-price").text();
         if (discountAsText != null) {
             Matcher matcherDiscount = PATTERN_DISCOUNT.matcher(discountAsText);
@@ -92,14 +95,14 @@ public class AmazonParser extends JsoupProductParser {
                 BigDecimal discountValue = priceStringToBigDecimal(matcherDiscount.group(1));
                 BigDecimal percentage = new BigDecimal(matcherDiscount.group(2));
 
-                return new Discount()
+                discount = new Discount()
                     .setOldPrice(oldPrice)
                     .setDiscount(discountValue)
                     .setPercentage(percentage);
             }
         }
 
-        return null;
+        return Optional.ofNullable(discount);
     }
 
     private BigDecimal priceStringToBigDecimal(String text) {

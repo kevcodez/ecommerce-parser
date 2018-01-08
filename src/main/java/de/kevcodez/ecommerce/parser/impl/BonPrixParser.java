@@ -5,6 +5,7 @@ import static java.util.Collections.singletonList;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,16 +59,18 @@ public class BonPrixParser extends JsoupProductParser {
     }
 
     @Override
-    Discount parseDiscount(BigDecimal currentPrice, Document document) {
+    Optional<Discount> parseDiscount(BigDecimal currentPrice, Document document) {
+        Discount discount = null;
+
         String formerPrice = document.select("span.price.former-price").text();
 
-        if (formerPrice.isEmpty()) {
-            return null;
+        if (!formerPrice.isEmpty()) {
+            String oldPriceAsString = formerPrice.replace("€", "").replace(",", ".");
+
+            discount = Discount.of(new BigDecimal(oldPriceAsString), currentPrice);
         }
 
-        String oldPriceAsString = formerPrice.replace("€", "").replace(",", ".");
-
-        return Discount.of(new BigDecimal(oldPriceAsString), currentPrice);
+        return Optional.ofNullable(discount);
     }
 
     @Override

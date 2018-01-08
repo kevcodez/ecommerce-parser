@@ -3,6 +3,7 @@ package de.kevcodez.ecommerce.parser.impl;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -33,12 +34,12 @@ abstract class JsoupProductParser implements ProductParser {
 
         BigDecimal currentPrice = parseCurrentPrice(document);
         String currencyCode = parseCurrencyCode(url, document);
-        Discount discount = parseDiscount(currentPrice, document);
+        Optional<Discount> discount = parseDiscount(currentPrice, document);
 
         Price price = new Price()
             .setCurrentPrice(currentPrice)
             .setCurrency(currencyCode)
-            .setDiscount(discount);
+            .setDiscount(discount.orElse(null));
 
         List<Image> images = parseImages(document);
 
@@ -68,7 +69,7 @@ abstract class JsoupProductParser implements ProductParser {
 
     abstract String parseCurrencyCode(String url, Document document);
 
-    abstract Discount parseDiscount(BigDecimal currentPrice, Document document);
+    abstract Optional<Discount> parseDiscount(BigDecimal currentPrice, Document document);
 
     abstract List<Image> parseImages(Document document);
 

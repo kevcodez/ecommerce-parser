@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,15 +68,17 @@ public class ConradParser extends JsoupProductParser {
     }
 
     @Override
-    Discount parseDiscount(BigDecimal currentPrice, Document document) {
+    Optional<Discount> parseDiscount(BigDecimal currentPrice, Document document) {
+        Discount discount = null;
+
         String discountAsText = document.select("div.ccpProductDetailInfo__cell__price__old__value > span").text();
 
         if (!discountAsText.isEmpty()) {
             String oldPriceAsString = discountAsText.replace(" €", "").replace(",", ".");
-            return Discount.of(new BigDecimal(oldPriceAsString), currentPrice);
+            discount = Discount.of(new BigDecimal(oldPriceAsString), currentPrice);
         }
 
-        return null;
+        return Optional.ofNullable(discount);
     }
 
     @Override

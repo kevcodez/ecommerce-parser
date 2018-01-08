@@ -3,6 +3,7 @@ package de.kevcodez.ecommerce.parser.impl;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,17 +61,19 @@ public class CyberportParser extends JsoupProductParser {
     }
 
     @Override
-    Discount parseDiscount(BigDecimal currentPrice, Document document) {
+    Optional<Discount> parseDiscount(BigDecimal currentPrice, Document document) {
+        Discount discount = null;
+
         String oldPriceAsString = document.select("div.old-price2 > div").text();
 
         if (!oldPriceAsString.isEmpty()) {
             String formattedPrice = oldPriceAsString.replace(".", ",").replace(",", ".");
             BigDecimal oldPrice = new BigDecimal(formattedPrice);
 
-            return Discount.of(oldPrice, currentPrice);
+            discount = Discount.of(oldPrice, currentPrice);
         }
 
-        return null;
+        return Optional.ofNullable(discount);
     }
 
     @Override

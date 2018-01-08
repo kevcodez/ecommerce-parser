@@ -5,6 +5,7 @@ import static java.util.Collections.singletonList;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,18 +62,20 @@ public class AlternateParser extends JsoupProductParser {
     }
 
     @Override
-    Discount parseDiscount(BigDecimal currentPrice, Document document) {
+    Optional<Discount> parseDiscount(BigDecimal currentPrice, Document document) {
+        Discount discount = null;
+
         String discountAsText = document.select("div.productShort > span.strikedPrice").text();
 
         if (discountAsText != null) {
             Matcher matcher = PATTERN_DISCOUNT.matcher(discountAsText);
             if (matcher.find()) {
                 BigDecimal previousPrice = new BigDecimal(matcher.group().replace(",", "."));
-                return Discount.of(previousPrice, currentPrice);
+                discount = Discount.of(previousPrice, currentPrice);
             }
         }
 
-        return null;
+        return Optional.ofNullable(discount);
     }
 
     @Override
