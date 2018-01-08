@@ -1,6 +1,6 @@
 package de.kevcodez.ecommerce.parser.impl;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -41,7 +41,7 @@ class AlternateParserTest extends AbstractParserTest {
                 "Der AMD Ryzen 5 1400 Processor ist eine Quad-Core-CPU für den Sockel AM4 mit 3,2 GHz Taktfrequenz und 8 Mbyte L3-Cache.")
         );
 
-        //        ImageDto image = dataDto.getImage();
+        //        Image image = dataDto.getImage();
         //        assertAll("image",
         //            () -> assertThat(image.getUrl())
         //                .isEqualTo("https://www.alternate.de/p/230x230/h/AMD_Ryzen_5_1400_WRAITH__Prozessor@@hr5a01.jpg"),
@@ -69,7 +69,7 @@ class AlternateParserTest extends AbstractParserTest {
 
         verifyDiscount(discount, expectedDiscount);
 
-        //        ImageDto image = dataDto.getImage();
+        //        Image image = dataDto.getImage();
         //        assertAll("image",
         //            () -> assertThat(image.getUrl())
         //                .isEqualTo(

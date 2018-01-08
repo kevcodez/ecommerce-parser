@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
@@ -76,7 +76,7 @@ public class AlternateParser extends JsoupProductParser {
     }
 
     @Override
-    List<ImageDto> parseImages(Document document) {
+    List<Image> parseImages(Document document) {
         String articleId = document.select("input[name='articleId']").attr("content").toLowerCase();
 
         int count = document.select("ul.jsSlickCarousel > li").size();
@@ -85,29 +85,29 @@ public class AlternateParser extends JsoupProductParser {
             count = 1;
         }
 
-        List<ImageDto> images = new ArrayList<>();
+        List<Image> images = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
             String suffix = i == 0 ? "" : String.valueOf(i);
 
-            ImageDto imageDto = new ImageDto();
-            imageDto.addVariant(ImageVariant.builder()
+            Image image = new Image();
+            image.addVariant(ImageVariant.builder()
                 .url(ALTERNATE_URL + "/p/230x230/h/AMD_Ryzen_5_1400_WRAITH__Prozessor@@" + articleId + suffix + ".jpg")
                 .width(230)
                 .height(230)
                 .build());
 
-            imageDto.addVariant(ImageVariant.builder()
+            image.addVariant(ImageVariant.builder()
                 .url(ALTERNATE_URL + "/p/50x50/h/AMD_Ryzen_5_1400_WRAITH__Prozessor@@" + articleId + suffix + ".jpg")
                 .width(50)
                 .height(50)
                 .build());
 
-            imageDto.addVariant(ImageVariant.builder()
+            image.addVariant(ImageVariant.builder()
                 .url(ALTERNATE_URL + "/p/o/h/AMD_Ryzen_5_1400_WRAITH__Prozessor@@" + articleId + suffix + ".jpg")
                 .build());
 
-            images.add(imageDto);
+            images.add(image);
         }
 
         return images;

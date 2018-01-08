@@ -14,7 +14,7 @@ import org.jsoup.nodes.Document;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
@@ -119,12 +119,12 @@ public class AmazonParser extends JsoupProductParser {
 
     @SneakyThrows
     @Override
-    List<ImageDto> parseImages(Document document) {
+    List<Image> parseImages(Document document) {
         TypeReference<Map<String, List<Integer>>> typeRef = new TypeReference<Map<String, List<Integer>>>() {
 
         };
 
-        List<ImageDto> images = new ArrayList<>();
+        List<Image> images = new ArrayList<>();
 
         Matcher matcher = PATTERN_IMAGES.matcher(document.html());
         if (matcher.find()) {
@@ -132,16 +132,16 @@ public class AmazonParser extends JsoupProductParser {
 
             ArrayNode imagesAsJson = (ArrayNode) OBJECT_MAPPER.readTree(colorImages);
             imagesAsJson.forEach(node -> {
-                ImageDto imageDto = new ImageDto();
+                Image image = new Image();
 
                 Map<String, List<Integer>> imageMap = OBJECT_MAPPER.convertValue(node.get("main"), typeRef);
-                imageMap.forEach((key, value) -> imageDto.addVariant(ImageVariant.builder()
+                imageMap.forEach((key, value) -> image.addVariant(ImageVariant.builder()
                     .url(key)
                     .height(value.get(0))
                     .width(value.get(1))
                     .build()));
 
-                images.add(imageDto);
+                images.add(image);
             });
         }
 

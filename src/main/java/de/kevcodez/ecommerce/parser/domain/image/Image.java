@@ -7,14 +7,14 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class ImageDto {
+public class Image {
 
     private final List<ImageVariant> variants = new ArrayList<>();
 
-    public ImageDto() {
+    public Image() {
     }
 
-    public ImageDto addVariant(ImageVariant imageVariant) {
+    public Image addVariant(ImageVariant imageVariant) {
         variants.add(imageVariant);
         return this;
     }

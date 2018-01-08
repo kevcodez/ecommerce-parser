@@ -11,7 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 
-import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 
@@ -71,7 +71,7 @@ public class ConradParser extends JsoupProductParser {
     }
 
     @Override
-    List<ImageDto> parseImages(Document document) {
+    List<Image> parseImages(Document document) {
         // TODO
         return Collections.emptyList();
     }

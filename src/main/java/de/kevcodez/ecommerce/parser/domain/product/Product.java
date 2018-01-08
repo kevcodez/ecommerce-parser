@@ -3,7 +3,7 @@ package de.kevcodez.ecommerce.parser.domain.product;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.price.Price;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class Product {
 
     private Price price;
 
-    private List<ImageDto> images = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
     public Product() {
 

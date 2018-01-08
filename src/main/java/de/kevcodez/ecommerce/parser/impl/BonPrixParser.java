@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
@@ -19,6 +19,8 @@ import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
 public class BonPrixParser extends JsoupProductParser {
 
     private static final Pattern PATTERN_IMG_DIMENSIONS = Pattern.compile("\\/(\\d+)x(\\d+)\\/");
+
+    private static final String IMAGE_PREFIX = "https:";
 
     public BonPrixParser(WebsiteSourceDownloader websiteSourceDownloader) {
         super(websiteSourceDownloader);
@@ -69,13 +71,13 @@ public class BonPrixParser extends JsoupProductParser {
     }
 
     @Override
-    List<ImageDto> parseImages(Document document) {
+    List<Image> parseImages(Document document) {
         Elements imageWrapperElements = document.select("div#carousel_product_look div.image-wrapper");
 
-        List<ImageDto> images = new ArrayList<>();
+        List<Image> images = new ArrayList<>();
 
         imageWrapperElements.forEach(element -> {
-            ImageDto image = new ImageDto();
+            Image image = new Image();
 
             String dataImageSrc = element.attr("data-image-src");
             String dataZoomImageSrc = element.attr("data-zoom-image-src");
@@ -98,7 +100,7 @@ public class BonPrixParser extends JsoupProductParser {
             int width = Integer.parseInt(matcher.group(2));
 
             return ImageVariant.builder()
-                .url("https:" + imageSource)
+                .url(IMAGE_PREFIX + imageSource)
                 .height(height)
                 .width(width)
                 .build();

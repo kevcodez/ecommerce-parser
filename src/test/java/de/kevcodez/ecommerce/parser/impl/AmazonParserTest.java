@@ -1,7 +1,7 @@
 package de.kevcodez.ecommerce.parser.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withinPercentage;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -16,7 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.domain.price.Price;
@@ -58,10 +58,10 @@ class AmazonParserTest extends AbstractParserTest {
             () -> assertThat(price.getDiscount()).isNull());
 
         // Images
-        assertThat(product.getImages().size()).isEqualTo(3);
+        assertThat(product.getImages()).hasSize(3);
 
-        ImageDto firstImage = product.getImages().get(0);
-        assertThat(firstImage.getVariants().size()).isEqualTo(5);
+        Image firstImage = product.getImages().get(0);
+        assertThat(firstImage.getVariants()).hasSize(5);
 
         ImageVariant firstImageVariant = firstImage.getVariants().get(0);
         verifyImageVariant(firstImageVariant, ImageVariant.builder()

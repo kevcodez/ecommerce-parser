@@ -7,7 +7,7 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.domain.price.Price;
 import de.kevcodez.ecommerce.parser.domain.product.Product;
@@ -40,7 +40,7 @@ public abstract class JsoupProductParser implements ProductParser {
             .setCurrency(currencyCode)
             .setDiscount(discount);
 
-        List<ImageDto> images = parseImages(document);
+        List<Image> images = parseImages(document);
 
         return Product.builder()
             .url(url)
@@ -70,6 +70,6 @@ public abstract class JsoupProductParser implements ProductParser {
 
     abstract Discount parseDiscount(BigDecimal currentPrice, Document document);
 
-    abstract List<ImageDto> parseImages(Document document);
+    abstract List<Image> parseImages(Document document);
 
 }

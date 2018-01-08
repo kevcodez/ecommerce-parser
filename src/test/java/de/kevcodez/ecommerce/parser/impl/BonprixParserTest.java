@@ -12,7 +12,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.kevcodez.ecommerce.parser.domain.image.ImageDto;
+import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.domain.price.Price;
@@ -55,10 +55,10 @@ class BonprixParserTest extends AbstractParserTest {
 
         Product product = bonPrixParser.parse(VALID_URL);
 
-        List<ImageDto> images = product.getImages();
+        List<Image> images = product.getImages();
         assertThat(images).hasSize(7);
 
-        ImageDto firstImage = images.get(0);
+        Image firstImage = images.get(0);
 
         assertThat(firstImage.getVariants()).hasSize(3);
 
