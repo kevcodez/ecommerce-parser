@@ -61,14 +61,15 @@ The product contains information about a product such as the title, description,
 
 # Currently supported
 
-* Amazon.de, Amazon.com
-* Alternate.de
-* Bonprix.de
-* Conrad.de, Conrad.it
-
-Partially: 
-
-* Cyberport.de (Images missing)
+| Page | Basic Data | Images |
+| ------------- |:-------------:| -----:|
+| Amazon.de | :heavy_check_mark: | :heavy_check_mark: |
+| Amazon.com | :heavy_check_mark: | :heavy_check_mark: |
+| Alternate.de | :heavy_check_mark: | :heavy_check_mark: |
+| Bonprix.de | :heavy_check_mark: | :heavy_check_mark: |
+| conrad.de | :heavy_check_mark: | :heavy_check_mark: |
+| conrad.it | :heavy_check_mark: | :heavy_check_mark: |
+| cyberport.de | :heavy_check_mark: | :x: |
 
 # Development
 
