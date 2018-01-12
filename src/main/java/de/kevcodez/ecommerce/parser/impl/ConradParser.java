@@ -25,7 +25,7 @@ import de.kevcodez.ecommerce.parser.exception.ParserException;
 
 public class ConradParser extends JsoupProductParser {
 
-    private static Pattern PATTERN_IMG_DIMENSIONS = Pattern.compile("\\?x=(\\d+)&y=(\\d+)");
+    private static final Pattern PATTERN_IMG_DIMENSIONS = Pattern.compile("\\?x=(\\d+)&y=(\\d+)");
 
     public ConradParser(WebsiteSourceDownloader websiteSourceDownloader) {
         super(websiteSourceDownloader);

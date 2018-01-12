@@ -91,7 +91,7 @@ public class AlternateParser extends JsoupProductParser {
         List<Image> images = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            String suffix = i == 0 ? "" : "_" + String.valueOf(i);
+            String suffix = i == 0 ? "" : "_" + i;
 
             Image image = new Image();
             image.addVariant(ImageVariant.builder()

@@ -28,7 +28,7 @@ public class ECommerceParser {
         parsers.add(new CyberportParser(websiteSourceDownloader));
     }
 
-    public Product parseLink(String url) throws ParserException {
+    public Product parseLink(String url) {
         try {
             String domainName = getDomainName(url);
             Optional<ProductParser> linkDataParser = parsers.stream()
