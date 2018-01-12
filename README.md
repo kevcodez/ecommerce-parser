@@ -63,7 +63,7 @@ Later on, things as reviews, similar products, different versions of a product m
 
 # Supported Sites
 
-| Page | Basic Data | Images |
+| Page | Basic Data * | Images |
 | ------------- |:-------------:| -----:|
 | Amazon.de | :heavy_check_mark: | :heavy_check_mark: |
 | Amazon.com | :heavy_check_mark: | :heavy_check_mark: |
@@ -72,6 +72,8 @@ Later on, things as reviews, similar products, different versions of a product m
 | conrad.de | :heavy_check_mark: | :heavy_check_mark: |
 | conrad.it | :heavy_check_mark: | :heavy_check_mark: |
 | cyberport.de | :heavy_check_mark: | :x: |
+
+* Basic data includes external ID, title, description, price and discount.
 
 # Contributing
 
