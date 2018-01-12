@@ -2,6 +2,7 @@ package de.kevcodez.ecommerce.parser.impl;
 
 import static java.util.Arrays.asList;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
-import lombok.SneakyThrows;
+import de.kevcodez.ecommerce.parser.exception.ParserException;
 
 public class AmazonParser extends JsoupProductParser {
 
@@ -79,7 +80,7 @@ public class AmazonParser extends JsoupProductParser {
             return "USD";
         }
 
-        throw new IllegalArgumentException("Currency code could not be parsed");
+        throw new ParserException("Currency code could not be parsed");
     }
 
     @Override
@@ -111,7 +112,7 @@ public class AmazonParser extends JsoupProductParser {
             return new BigDecimal(matcher.group().replace(",", "."));
         }
         else {
-            throw new IllegalArgumentException("Could not find price");
+            throw new ParserException("Could not find price");
         }
     }
 
@@ -120,7 +121,6 @@ public class AmazonParser extends JsoupProductParser {
         return document.select("input#ASIN").val();
     }
 
-    @SneakyThrows
     @Override
     List<Image> parseImages(Document document) {
         TypeReference<Map<String, List<Integer>>> typeRef = new TypeReference<Map<String, List<Integer>>>() {
@@ -133,7 +133,7 @@ public class AmazonParser extends JsoupProductParser {
         if (matcher.find()) {
             String colorImages = matcher.group();
 
-            ArrayNode imagesAsJson = (ArrayNode) OBJECT_MAPPER.readTree(colorImages);
+            ArrayNode imagesAsJson = convertImageJson(colorImages);
             imagesAsJson.forEach(node -> {
                 Image image = new Image();
 
@@ -149,6 +149,15 @@ public class AmazonParser extends JsoupProductParser {
         }
 
         return images;
+    }
+
+    public ArrayNode convertImageJson(String json) {
+        try {
+            return (ArrayNode) OBJECT_MAPPER.readTree(json);
+        }
+        catch (IOException exc) {
+            throw new ParserException("Exception parsing images", exc);
+        }
     }
 
 }

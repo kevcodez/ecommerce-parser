@@ -21,6 +21,7 @@ import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
+import de.kevcodez.ecommerce.parser.exception.ParserException;
 
 public class ConradParser extends JsoupProductParser {
 
@@ -127,6 +128,6 @@ public class ConradParser extends JsoupProductParser {
                 .build();
         }
 
-        throw new IllegalArgumentException("Error parsing image variant " + url);
+        throw new ParserException("Error parsing image variant " + url);
     }
 }

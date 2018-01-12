@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import de.kevcodez.ecommerce.parser.domain.product.Product;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
+import de.kevcodez.ecommerce.parser.exception.ParserException;
 import de.kevcodez.ecommerce.parser.impl.AlternateParser;
 import de.kevcodez.ecommerce.parser.impl.AmazonParser;
 import de.kevcodez.ecommerce.parser.impl.BonPrixParser;
@@ -27,23 +28,28 @@ public class ECommerceParser {
         parsers.add(new CyberportParser(websiteSourceDownloader));
     }
 
-    public Product parseLink(String url) throws URISyntaxException {
-        String domainName = getDomainName(url);
+    public Product parseLink(String url) throws ParserException {
+        try {
+            String domainName = getDomainName(url);
+            Optional<ProductParser> linkDataParser = parsers.stream()
+                .filter(parser -> parser.matches(domainName))
+                .findFirst();
 
-        Optional<ProductParser> linkDataParser = parsers.stream()
-            .filter(parser -> parser.matches(domainName))
-            .findFirst();
-
-        if (linkDataParser.isPresent()) {
-            return linkDataParser.get().parse(url);
+            if (linkDataParser.isPresent()) {
+                return linkDataParser.get().parse(url);
+            }
+        }
+        catch (URISyntaxException exc) {
+            throw new ParserException("Uri could not be parsed", exc);
         }
 
-        throw new IllegalArgumentException("No parser found for url " + url);
+        throw new ParserException("No parser found for url " + url);
     }
 
     private String getDomainName(String url) throws URISyntaxException {
         URI uri = new URI(url);
         String domain = uri.getHost();
+
         return domain.startsWith("www.") ? domain.substring(4) : domain;
     }
 

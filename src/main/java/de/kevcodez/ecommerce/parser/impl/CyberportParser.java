@@ -12,6 +12,7 @@ import org.jsoup.nodes.Document;
 import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
+import de.kevcodez.ecommerce.parser.exception.ParserException;
 
 public class CyberportParser extends JsoupProductParser {
 
@@ -36,7 +37,7 @@ public class CyberportParser extends JsoupProductParser {
             return matcher.group();
         }
 
-        throw new IllegalArgumentException("Parsing external id failed");
+        throw new ParserException("Parsing external id failed");
     }
 
     @Override

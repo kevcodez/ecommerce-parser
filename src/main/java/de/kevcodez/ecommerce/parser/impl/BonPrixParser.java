@@ -16,6 +16,7 @@ import de.kevcodez.ecommerce.parser.domain.image.Image;
 import de.kevcodez.ecommerce.parser.domain.image.ImageVariant;
 import de.kevcodez.ecommerce.parser.domain.price.Discount;
 import de.kevcodez.ecommerce.parser.downloader.WebsiteSourceDownloader;
+import de.kevcodez.ecommerce.parser.exception.ParserException;
 
 public class BonPrixParser extends JsoupProductParser {
 
@@ -109,7 +110,7 @@ public class BonPrixParser extends JsoupProductParser {
                 .build();
         }
 
-        throw new IllegalArgumentException("Error parsing images with url " + imageSource);
+        throw new ParserException("Error parsing images with url " + imageSource);
     }
 
 }
