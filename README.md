@@ -19,7 +19,7 @@ class Test {
 }
 ```
 
-The product contains information about a product such as the title, description, current price, discount and image variants.
+The response contains information about a product such as the title, description, current price, discount and image variants.
 
 ```json
 {
@@ -59,7 +59,9 @@ The product contains information about a product such as the title, description,
 }
 ```
 
-# Currently supported
+Later on, things as reviews, similar products, different versions of a product might be parsed aswell.
+
+# Supported Sites
 
 | Page | Basic Data | Images |
 | ------------- |:-------------:| -----:|
@@ -70,6 +72,10 @@ The product contains information about a product such as the title, description,
 | conrad.de | :heavy_check_mark: | :heavy_check_mark: |
 | conrad.it | :heavy_check_mark: | :heavy_check_mark: |
 | cyberport.de | :heavy_check_mark: | :x: |
+
+# Contributing
+
+If you have an idea to improve the project, found a bug, want a site to be added or have a question - please open up a new [issue](https://github.com/kevcodez/ecommerce-parser/issues). Feel free to open up a pull request, too!
 
 # Development
 
