@@ -9,23 +9,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
+        <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
 
         <jacoco.agent.argLine/>
 
         <!-- Versions -->
         <jackson.version>2.9.3</jackson.version>
         <jsoup.version>1.11.2</jsoup.version>
-        <lombok.version>1.16.18</lombok.version>
+        <kotlin.version>1.2.10</kotlin.version>
 
         <!-- Testing purposes -->
         <assertj.version>3.8.0</assertj.version>
         <junit.version>5.0.2</junit.version>
         <mockito.version>2.13.0</mockito.version>
+        <mockito-kotlin.version>1.5.0</mockito-kotlin.version>
 
         <!-- Plugins -->
         <plugin.coveralls.version>4.3.0</plugin.coveralls.version>
@@ -48,13 +48,10 @@
             <version>${jackson.version}</version>
         </dependency>
 
-        <!-- Provided dependencies -->
-
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
         </dependency>
 
         <!-- Dependencies for testing -->
@@ -94,18 +91,48 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nhaarman</groupId>
+            <artifactId>mockito-kotlin</artifactId>
+            <version>${mockito-kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>
-        <plugins>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 
+        <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${plugin.maven-compiler.version}</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <version>${kotlin.version}</version>
+
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>test-compile</id>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>

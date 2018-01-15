@@ -81,7 +81,7 @@ If you have an idea to improve the project, found a bug, want a site to be added
 
 # Development
 
-This project is using Java 8 with Maven, Junit 5, Mockito 2. [Jsoup](https://github.com/jhy/jsoup) is used for parsing.
+This project is using Kotlin (Java 8 as Target VM) with Maven, Junit 5, Mockito 2. [Jsoup](https://github.com/jhy/jsoup) is used for parsing.
 
 Build the project using `mvn clean install`.
 
