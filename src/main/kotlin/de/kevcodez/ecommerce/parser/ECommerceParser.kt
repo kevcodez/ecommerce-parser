@@ -23,7 +23,7 @@ class ECommerceParser(websiteSourceDownloader: WebsiteSourceDownloader) {
         try {
             val domainName = getDomainName(url)
             val linkDataParser = parsers.stream()
-                    .filter({ parser -> parser.matches(domainName) })
+                    .filter { it.matches(domainName) }
                     .findFirst()
 
             if (linkDataParser.isPresent) {
@@ -33,7 +33,7 @@ class ECommerceParser(websiteSourceDownloader: WebsiteSourceDownloader) {
             throw ParserException("Uri could not be parsed", exc)
         }
 
-        throw ParserException("No parser found for url " + url)
+        throw ParserException("No parser found for url $url")
     }
 
     @Throws(URISyntaxException::class)

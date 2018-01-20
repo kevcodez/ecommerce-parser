@@ -101,7 +101,7 @@ class AmazonParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupProd
             val colorImages = matcher.group()
 
             val imagesAsJson = convertImageJson(colorImages)
-            imagesAsJson.forEach({
+            imagesAsJson.forEach {
                 val image = Image()
 
                 val imageMap: Map<String, List<Int>> = OBJECT_MAPPER.convertValue(it.get("main"), typeRef)
@@ -113,7 +113,7 @@ class AmazonParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupProd
                 })
 
                 images.add(image)
-            })
+            }
         }
 
         return images

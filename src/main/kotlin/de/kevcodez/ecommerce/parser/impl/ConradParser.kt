@@ -10,7 +10,7 @@ import java.math.BigDecimal
 import java.util.*
 import java.util.Arrays.asList
 import java.util.regex.Pattern
-import java.util.stream.Collectors
+import java.util.stream.Collectors.joining
 
 class ConradParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupProductParser(websiteSourceDownloader) {
 
@@ -29,9 +29,9 @@ class ConradParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupProd
     override fun parseDescription(document: Document): String {
         val descriptionSection = document.select("div#description > section")[0]
         return descriptionSection.textNodes().stream()
-                .filter({ node -> !node.isBlank })
-                .map({ it -> it.wholeText })
-                .collect(Collectors.joining("\n"))
+                .filter { !it.isBlank }
+                .map { it.wholeText }
+                .collect(joining("\n"))
                 .trim()
     }
 
@@ -64,7 +64,7 @@ class ConradParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupProd
 
         val images = ArrayList<Image>()
 
-        imageElements.forEach({ element ->
+        imageElements.forEach { element ->
             val url = element.attr("src")
 
             val image = Image()
@@ -75,7 +75,7 @@ class ConradParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupProd
                     .forEach({ image.addVariant(it) })
 
             images.add(image)
-        })
+        }
 
         return images
     }
@@ -86,9 +86,10 @@ class ConradParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupProd
         val urls = HashSet<String>()
 
         val imgElements = document.select("img")
-        imgElements.stream().map({ element -> element.attr("src") })
-                .filter({ src -> src.startsWith(urlWithoutParameters) })
-                .forEach({ urls.add(it) })
+        imgElements.stream()
+                .map { element -> element.attr("src") }
+                .filter { src -> src.startsWith(urlWithoutParameters) }
+                .forEach { urls.add(it) }
 
         return urls
     }

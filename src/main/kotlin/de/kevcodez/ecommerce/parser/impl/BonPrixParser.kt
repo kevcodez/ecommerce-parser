@@ -57,7 +57,7 @@ class BonPrixParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupPro
 
         val images = ArrayList<Image>()
 
-        imageWrapperElements.forEach({ element ->
+        imageWrapperElements.forEach { element ->
             val image = Image()
 
             val dataImageSrc = element.attr("data-image-src")
@@ -69,7 +69,7 @@ class BonPrixParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupPro
             image.addVariant(buildImageVariantFromUrl(dataPreviewImageSrc))
 
             images.add(image)
-        })
+        }
 
         return images
     }
