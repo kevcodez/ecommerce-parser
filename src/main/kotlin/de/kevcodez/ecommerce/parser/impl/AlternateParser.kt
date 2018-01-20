@@ -23,7 +23,7 @@ class AlternateParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupP
     override fun parseTitle(document: Document): String {
         val nameElements = document.select("div.productNameContainer > h1 > span")
 
-        return nameElements[0].text() + " " + nameElements[1].text()
+        return "${nameElements[0].text()} ${nameElements[1].text()}"
     }
 
     override fun parseDescription(document: Document): String {
@@ -68,7 +68,7 @@ class AlternateParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupP
         val images = ArrayList<Image>()
 
         for (i in 0 until count) {
-            val suffix = if (i == 0) "" else "_" + i
+            val suffix = if (i == 0) "" else "_$i"
 
             val image = Image()
             image.addVariant(ImageVariant(
@@ -91,6 +91,6 @@ class AlternateParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupP
 
         private val PATTERN_DISCOUNT = Pattern.compile("""\d+,\d+""")
 
-        private val ALTERNATE_URL = "https://www.alternate.de"
+        private const val ALTERNATE_URL = "https://www.alternate.de"
     }
 }

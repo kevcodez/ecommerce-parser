@@ -19,10 +19,10 @@
         <!-- Versions -->
         <jackson.version>2.9.3</jackson.version>
         <jsoup.version>1.11.2</jsoup.version>
-        <kotlin.version>1.2.10</kotlin.version>
+        <kotlin.version>1.2.20</kotlin.version>
 
         <!-- Testing purposes -->
-        <assertj.version>3.8.0</assertj.version>
+        <assertj.version>3.9.0</assertj.version>
         <junit.version>5.0.2</junit.version>
         <mockito.version>2.13.0</mockito.version>
         <mockito-kotlin.version>1.5.0</mockito-kotlin.version>
@@ -104,7 +104,6 @@
             <version>${mockito-kotlin.version}</version>
             <scope>test</scope>
         </dependency>
-
 
     </dependencies>
 

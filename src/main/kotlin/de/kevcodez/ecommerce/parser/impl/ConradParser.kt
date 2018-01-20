@@ -103,7 +103,7 @@ class ConradParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupProd
                     width = Integer.parseInt(matcher.group(1)))
         }
 
-        throw ParserException("Error parsing image variant " + url)
+        throw ParserException("Error parsing image variant $url")
     }
 
     companion object {

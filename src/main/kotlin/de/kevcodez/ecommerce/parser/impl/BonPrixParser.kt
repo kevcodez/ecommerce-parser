@@ -86,7 +86,7 @@ class BonPrixParser(websiteSourceDownloader: WebsiteSourceDownloader) : JsoupPro
                     width = width)
         }
 
-        throw ParserException("Error parsing images with url " + imageSource)
+        throw ParserException("Error parsing images with url $imageSource")
     }
 
     companion object {
