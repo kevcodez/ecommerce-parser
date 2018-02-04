@@ -19,7 +19,7 @@
         <!-- Versions -->
         <jackson.version>2.9.3</jackson.version>
         <jsoup.version>1.11.2</jsoup.version>
-        <kotlin.version>1.2.20</kotlin.version>
+        <kotlin.version>1.2.21</kotlin.version>
 
         <!-- Testing purposes -->
         <assertj.version>3.9.0</assertj.version>
@@ -108,18 +108,22 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
 
         <plugins>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
+                <configuration>
+                    <jvmTarget>1.8</jvmTarget>
+                </configuration>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <version>${kotlin.version}</version>
 
                 <executions>
                     <execution>
                         <id>compile</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
@@ -127,6 +131,7 @@
 
                     <execution>
                         <id>test-compile</id>
+                        <phase>test-compile</phase>
                         <goals>
                             <goal>test-compile</goal>
                         </goals>
