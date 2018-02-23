@@ -17,20 +17,20 @@
         <jacoco.agent.argLine/>
 
         <!-- Versions -->
-        <jackson.version>2.9.3</jackson.version>
+        <jackson.version>2.9.4</jackson.version>
         <jsoup.version>1.11.2</jsoup.version>
         <kotlin.version>1.2.21</kotlin.version>
 
         <!-- Testing purposes -->
         <assertj.version>3.9.0</assertj.version>
-        <junit.version>5.0.2</junit.version>
-        <mockito.version>2.13.0</mockito.version>
+        <junit.version>5.1.0</junit.version>
+        <mockito.version>2.15.0</mockito.version>
         <mockito-kotlin.version>1.5.0</mockito-kotlin.version>
 
         <!-- Plugins -->
         <plugin.coveralls.version>4.3.0</plugin.coveralls.version>
         <plugin.jacoco.version>0.8.0</plugin.jacoco.version>
-        <plugin.junit-surefire-provider.version>1.0.2</plugin.junit-surefire-provider.version>
+        <plugin.junit-surefire-provider.version>1.1.0</plugin.junit-surefire-provider.version>
         <plugin.maven-compiler.version>3.7.0</plugin.maven-compiler.version>
         <plugin.surefire.version>2.19.1</plugin.surefire.version>
     </properties>
