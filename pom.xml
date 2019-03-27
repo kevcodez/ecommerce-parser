@@ -17,7 +17,7 @@
         <jacoco.agent.argLine/>
 
         <!-- Versions -->
-        <jackson.version>2.9.5</jackson.version>
+        <jackson.version>2.9.8</jackson.version>
         <jsoup.version>1.11.3</jsoup.version>
         <kotlin.version>1.2.41</kotlin.version>
 
